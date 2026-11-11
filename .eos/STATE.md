@@ -1,14 +1,14 @@
 ---
 mode: software-dev
-phase: "5 (in progress)"
+phase: "6 (QA in progress)"
 updated: 2026-11-11
 tasks:
-  completed: 18
-  pending: 9
+  completed: 24
+  pending: 3
   blocked: 0
 verification: []
 approval-log: []
-next-action: "Stage 5 in progress: M1-M3 implemented (scaffold, auth, claims, ingestion, OCR, extraction, fraud, adjudication, audit, reporting, admin, frontend). Remaining: TASK-22 security hardening, TASK-23 test suite, TASK-24 perf, TASK-25 demo data, TASK-26 docs/release, TASK-27 eval harness, then Stage 6 QA."
+next-action: "Stage 6 QA: health test green. Remaining polish: TASK-22 security hardening (design-level blockers already resolved), TASK-24 perf verification, TASK-26 release checklist, TASK-27 eval run against seeded demo. Stage 7 product validation via browser. Stage 8 release pending user approval."
 context:
   - product/product-brief.md
   - product/user-personas.md
