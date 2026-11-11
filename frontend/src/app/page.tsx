@@ -1,24 +1,30 @@
+"use client";
 import AppShell from "@/components/AppShell";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
+  const items = [
+    { title: "Claims", desc: "Review, score and adjudicate insurance claims", href: "/claims", cta: "View claims" },
+    { title: "Dashboard", desc: "Fraud KPIs and provider analytics", href: "/dashboard", cta: "Open dashboard" },
+    { title: "New Claim", desc: "Upload a claim bundle for AI processing", href: "/claims/new", cta: "Upload" },
+  ];
   return (
     <AppShell>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em" }}>MediClaim AI</h1>
-        <p style={{ color: "#64748b", marginTop: 6, fontSize: 16 }}>AI-powered health insurance claim fraud detection and adjudication.</p>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold tracking-tight">MediClaim AI</h1>
+        <p className="text-muted-foreground mt-2">AI-powered health insurance claim fraud detection and adjudication.</p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
-        {[
-          { title: "Claims", desc: "Review, score and adjudicate claims", href: "/claims", cta: "View claims" },
-          { title: "Dashboard", desc: "Fraud KPIs and provider analytics", href: "/dashboard", cta: "Open dashboard" },
-          { title: "New Claim", desc: "Upload a claim bundle for processing", href: "/claims/new", cta: "Upload" },
-        ].map((c) => (
-          <div key={c.title} className="card" style={{ padding: 24 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 600 }}>{c.title}</h3>
-            <p style={{ color: "#64748b", fontSize: 14, marginTop: 6 }}>{c.desc}</p>
-            <Link href={c.href} className="btn btn-primary" style={{ marginTop: 16, display: "inline-flex" }}>{c.cta}</Link>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {items.map((c) => (
+          <Card key={c.title}>
+            <CardHeader><CardTitle>{c.title}</CardTitle></CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">{c.desc}</p>
+              <Button onClick={() => (window.location.href = c.href)}>{c.cta}</Button>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </AppShell>

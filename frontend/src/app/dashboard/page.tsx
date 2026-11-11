@@ -1,44 +1,60 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import AppShell from "@/components/AppShell";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardPage() {
-  const [kpi, setKpi] = useState<any>(null);
-  useEffect(() => { api("/dashboard/kpis").then(setKpi).catch(() => {}); }, []);
-  if (!kpi) return <AppShell><div className="skeleton" style={{ height: 200 }} /></AppShell>;
+  const { data: kpi, isLoading } = useQuery({
+    queryKey: ["kpis"],
+    queryFn: () => api("/dashboard/kpis"),
+  });
+
+  if (isLoading || !kpi) return (
+    <AppShell>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+      </div>
+    </AppShell>
+  );
+
   return (
     <AppShell>
-      <div style={{ marginBottom: 20 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700 }}>Dashboard</h1>
-        <p style={{ color: "#64748b", fontSize: 14, marginTop: 4 }}>Claims overview and fraud analytics</p>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">Claims overview and fraud analytics</p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 24 }}>
-        <StatCard label="Claims Processed" value={kpi.claims_processed} accent="#4f46e5" />
-        <StatCard label="Pending" value={kpi.claims_pending} accent="#f59e0b" />
-        <StatCard label="Fraud Flagged" value={kpi.fraud_flagged_count} accent="#ef4444" />
-        <StatCard label="Amount at Risk (INR)" value={kpi.amount_at_risk?.toLocaleString("en-IN")} accent="#10b981" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <KpiCard label="Claims Processed" value={kpi.claims_processed} color="text-indigo-600" />
+        <KpiCard label="Pending" value={kpi.claims_pending} color="text-amber-600" />
+        <KpiCard label="Fraud Flagged" value={kpi.fraud_flagged_count} color="text-red-600" />
+        <KpiCard label="Amount at Risk" value={`₹${kpi.amount_at_risk?.toLocaleString("en-IN")}`} color="text-emerald-600" />
       </div>
-      <div className="card" style={{ padding: 24 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>Decision Rates</h2>
-        <div style={{ display: "flex", gap: 24 }}>
-          {Object.entries(kpi.decision_rates || {}).map(([k, v]: any) => (
-            <div key={k}>
-              <div style={{ fontSize: 12, color: "#64748b", textTransform: "capitalize" }}>{k}</div>
-              <div style={{ fontSize: 22, fontWeight: 700 }}>{(v * 100).toFixed(0)}%</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <Card>
+        <CardHeader><CardTitle>Decision Rates</CardTitle></CardHeader>
+        <CardContent>
+          <div className="flex gap-8">
+            {Object.entries(kpi.decision_rates || {}).map(([k, v]: any) => (
+              <div key={k}>
+                <div className="text-xs text-muted-foreground capitalize">{k}</div>
+                <div className="text-2xl font-bold">{(v * 100).toFixed(0)}%</div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </AppShell>
   );
 }
 
-function StatCard({ label, value, accent }: { label: string; value: any; accent: string }) {
+function KpiCard({ label, value, color }: { label: string; value: any; color: string }) {
   return (
-    <div className="card stat-card">
-      <div className="stat-label">{label}</div>
-      <div className="stat-value" style={{ color: accent }}>{value}</div>
-    </div>
+    <Card>
+      <CardContent className="pt-6">
+        <div className="text-xs text-muted-foreground font-medium">{label}</div>
+        <div className={`text-3xl font-bold mt-2 ${color}`}>{value}</div>
+      </CardContent>
+    </Card>
   );
 }
