@@ -1,1 +1,6 @@
 .eos/memory/session/
+backend/.venv/
+backend/data/
+backend/.env
+frontend/.next/
+frontend/node_modules/
