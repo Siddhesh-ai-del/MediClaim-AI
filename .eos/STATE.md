@@ -1,14 +1,14 @@
 ---
 mode: software-dev
-phase: "4 (complete, awaiting Stage 5)"
+phase: "5 (in progress)"
 updated: 2026-11-11
 tasks:
-  completed: 0
-  pending: 0
+  completed: 18
+  pending: 9
   blocked: 0
 verification: []
 approval-log: []
-next-action: "Stage 4 complete — 27 tasks across 6 milestones planned. Awaiting user approval to begin Stage 5 (Engineering Implementation)."
+next-action: "Stage 5 in progress: M1-M3 implemented (scaffold, auth, claims, ingestion, OCR, extraction, fraud, adjudication, audit, reporting, admin, frontend). Remaining: TASK-22 security hardening, TASK-23 test suite, TASK-24 perf, TASK-25 demo data, TASK-26 docs/release, TASK-27 eval harness, then Stage 6 QA."
 context:
   - product/product-brief.md
   - product/user-personas.md
